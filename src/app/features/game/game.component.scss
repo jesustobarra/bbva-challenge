@@ -1,0 +1,121 @@
+.game {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 100%;
+  min-height: 100dvh;
+  padding: max(1rem, env(safe-area-inset-top, 0px))
+    max(1.25rem, env(safe-area-inset-right, 0px))
+    max(1.5rem, env(safe-area-inset-bottom, 0px))
+    max(1.25rem, env(safe-area-inset-left, 0px));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.game-header {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: min(100%, 36rem);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'back back'
+    'name stats';
+  align-items: baseline;
+  gap: 0.75rem 1rem;
+  padding-bottom: 0.75rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(15, 23, 42, 0.12);
+}
+
+.game-header__back {
+  grid-area: back;
+  justify-self: start;
+}
+
+.game-header__name {
+  grid-area: name;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #0f172a;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.game-header__stats {
+  grid-area: stats;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: flex-end;
+  gap: 0.75rem 1.25rem;
+}
+
+.game-header__score {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  flex-shrink: 0;
+}
+
+.game-header__score-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #64748b;
+}
+
+.game-header__score-value {
+  font-size: 1.25rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #0f172a;
+}
+
+.game-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.controls {
+  margin-top: 2rem;
+  display: flex;
+  gap: 0;
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.controls lib-button {
+  flex: 1;
+  width: 100%;
+  align-self: stretch;
+  justify-content: center;
+}
+
+.controls span {
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.controls lib-masked-icon {
+  --masked-icon-width: 1.75rem;
+}
+
+@media (min-width: 768px) {
+  .controls {
+    justify-content: space-between;
+  }
+
+  .controls lib-button {
+    flex: 0 0 auto;
+    width: auto;
+    align-self: center;
+  }
+}

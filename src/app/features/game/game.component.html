@@ -1,0 +1,56 @@
+<div class="game">
+  <header class="game-header" aria-label="Jugador y puntuación">
+    <lib-button
+      class="game-header__back"
+      [variant]="'secondary'"
+      [type]="'button'"
+      (click)="goToMenu()"
+    >
+      Volver al menú
+    </lib-button>
+    <span class="game-header__name">{{ player.name() }}</span>
+    <div class="game-header__stats">
+      <span class="game-header__score">
+        <span class="game-header__score-label">Puntos</span>
+        <span class="game-header__score-value" aria-live="polite">{{
+          player.score()
+        }}</span>
+      </span>
+      <span class="game-header__score">
+        <span class="game-header__score-label">Récord</span>
+        <span class="game-header__score-value" aria-live="polite">{{
+          player.maxPoints()
+        }}</span>
+      </span>
+    </div>
+  </header>
+
+  <div class="game-body">
+    <app-traffic-light
+      [color]="semaforo()"
+      [ariaLabel]="
+        semaforo() === 'red' ? 'Semáforo en rojo' : 'Semáforo en verde'
+      "
+    />
+
+    <div class="controls" role="group" aria-label="Controles">
+      <lib-button
+        [variant]="'secondary'"
+        [type]="'button'"
+        (click)="moveLeft()"
+      >
+        <app-footprint [color]="footColor('left')" />
+        <span>LEFT</span>
+      </lib-button>
+
+      <lib-button
+        [variant]="'secondary'"
+        [type]="'button'"
+        (click)="moveRight()"
+      >
+        <app-footprint [color]="footColor('right')" />
+        <span>RIGHT</span>
+      </lib-button>
+    </div>
+  </div>
+</div>

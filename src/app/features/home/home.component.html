@@ -1,0 +1,19 @@
+<form class="home" (submit)="acceder()">
+  <h1 class="title">Red Light, Green Light!</h1>
+  <lib-input
+    [label]="'Nombre'"
+    [placeholder]="'Escribe tu nombre'"
+    [errors]="errors()"
+    [value]="name()"
+
+    (onInput)="onInput($event)"
+  />
+  <lib-button
+    [variant]="'primary'"
+    [type]="'submit'"
+    [disabled]="!hasName()"
+    (click)="acceder()"
+  >
+    Acceder
+  </lib-button>
+</form>

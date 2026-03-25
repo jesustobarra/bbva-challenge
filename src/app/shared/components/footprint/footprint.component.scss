@@ -1,0 +1,11 @@
+
+lib-masked-icon {
+  --masked-icon-width: 2rem !important;
+}
+
+@media (min-width: 768px) {
+  lib-masked-icon {
+    --masked-icon-width: 5rem !important;
+  }
+}
+
