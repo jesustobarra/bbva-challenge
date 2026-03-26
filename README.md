@@ -1,59 +1,76 @@
-# RedLightGreenLight
+# RedLightGreenLight (PWA)
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 21.2.3.
+## Requisitos
 
-## Development server
+- Node.js y npm (este proyecto usa `npm@11.x`)
 
-To start a local development server, run:
-
-```bash
-ng serve
-```
-
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
-
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+## Instalar dependencias
 
 ```bash
-ng generate component component-name
+npm install
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+## Ejecutar en local
 
 ```bash
-ng generate --help
+npm run start
 ```
 
-## Building
+Abre `http://localhost:4200/`.
 
-To build the project run:
+## Ejecutar tests unitarios
 
 ```bash
-ng build
+npm test
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+Cobertura:
 
 ```bash
-ng test
+npm run test:coverage
 ```
 
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
+## Construir (build)
 
 ```bash
-ng e2e
+npm run build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Genera los artefactos en `dist/`. Al ser el build por defecto una configuración de producción, el Service Worker se activa (útil para el modo offline/PWA).
 
-## Additional Resources
+## Librería Fake (custom elements)
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+La app usa componentes tipo *web component* (custom elements) con etiquetas como `<lib-input>`, `<lib-button>` y `<lib-masked-icon>`.
+
+En lugar de depender de una librería externa, estas piezas están implementadas en `fake-lib-components/`, que “fingea” una UI externa para que el proyecto sea autocontenido y testeable.
+
+## PWA / Modo offline
+
+El modo offline (PWA) funciona mediante Service Worker usando `@angular/service-worker` y `ngsw-config.json`.
+
+Pasos típicos para comprobarlo localmente:
+
+1. Ejecuta un build:
+   ```bash
+   npm run build
+   ```
+2. Sirve el contenido generado en `dist/` con un servidor estático (por ejemplo: `npx http-server`).
+
+## Persistencia de progreso
+
+El progreso por jugador se persiste en `localStorage` con la key:
+
+- `rlgl-player-saves`
+
+Se guarda:
+
+- `resumeScore`
+- `maxPoints`
+
+## Despliegue público
+
+La app se puede desplegar como SPA estática (por ejemplo en Vercel, Netlify o GitHub Pages).
+
+- Comando de build: `npm run build`
+- Sirve el contenido generado por Angular en `dist/`.
+

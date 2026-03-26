@@ -1,14 +1,21 @@
 {
   "name": "red-light-green-light",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "test": "vitest --environment jsdom",
+    "test:coverage": "vitest run --environment jsdom --coverage",
+    "test:ng": "ng test",
     "storybook": "ng run red-light-green-light:storybook",
-    "build-storybook": "ng run red-light-green-light:build-storybook"
+    "build-storybook": "ng run red-light-green-light:build-storybook",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix",
+    "lint:strict": "ng lint --max-warnings=0",
+    "docs": "compodoc -p tsconfig.app.json",
+    "docs:serve": "compodoc -p tsconfig.app.json -s -o"
   },
   "private": true,
   "packageManager": "npm@11.6.2",
@@ -33,13 +40,19 @@
     "@angular/compiler-cli": "^21.2.0",
     "@angular/platform-browser-dynamic": "^21.2.0",
     "@chromatic-com/storybook": "^4.1.3",
+    "@compodoc/compodoc": "^1.2.1",
+    "@eslint/js": "^10.0.1",
     "@storybook/addon-docs": "^10.3.3",
     "@storybook/angular": "^10.3.3",
     "@storybook/web-components-vite": "^10.3.3",
+    "@vitest/coverage-v8": "^4.1.1",
+    "angular-eslint": "21.3.1",
+    "eslint": "^10.0.3",
     "jsdom": "^28.0.0",
     "prettier": "^3.8.1",
     "storybook": "^10.3.3",
     "typescript": "~5.9.2",
+    "typescript-eslint": "8.56.1",
     "vitest": "^4.0.8"
   }
 }

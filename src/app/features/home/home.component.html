@@ -1,4 +1,4 @@
-<form class="home" (submit)="acceder()">
+<form class="home" (submit)="enterGame()">
   <h1 class="title">Red Light, Green Light!</h1>
   <lib-input
     [label]="'Nombre'"
@@ -12,7 +12,7 @@
     [variant]="'primary'"
     [type]="'submit'"
     [disabled]="!hasName()"
-    (click)="acceder()"
+    (click)="enterGame()"
   >
     Acceder
   </lib-button>

@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
 
+/**
+ * Renders a footprint icon with configurable color.
+ */
 @Component({
   selector: 'app-footprint',
   standalone: true,
@@ -15,8 +18,10 @@ import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, input } fro
   `,
 })
 export class FootprintComponent {
-  protected readonly iconPath = '/footprints.svg';
+  /** Static asset path for the footprint icon. */
+  protected readonly iconPath = '/assets/footprints.svg';
 
+  /** Color applied to the rendered icon. */
   readonly color = input<string>();
 }
 

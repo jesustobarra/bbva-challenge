@@ -1,9 +1,14 @@
 import { css, html, LitElement } from 'lit';
 import { property, state } from 'lit/decorators.js';
 
+/** Counter used to generate unique input ids. */
 let n = 0;
 
+/**
+ * Text input web component with validation feedback.
+ */
 export class InputComponent extends LitElement {
+  /** Component styles for label, field and validation state. */
   static override styles = css`
     :host {
       display: block;
@@ -46,19 +51,32 @@ export class InputComponent extends LitElement {
     }
   `;
 
+  /** Stable id used to bind the label to the native input. */
   private readonly fieldId = `lib-input-${++n}`;
 
-  @property({ type: String }) accessor label = '';
-  @property({ type: Boolean, reflect: true }) accessor disabled = false;
-  @property({ type: String }) accessor placeholder = '';
+  /** Optional visible label. */
+  @property({ type: String })
+  accessor label = '';
+  /** Disables the native input when true. */
+  @property({ type: Boolean, reflect: true })
+  accessor disabled = false;
+  /** Placeholder text for the native input. */
+  @property({ type: String })
+  accessor placeholder = '';
 
-  @property({ type: String, reflect: true }) accessor value = '';
+  /** Current input value (two-way style with emitted events). */
+  @property({ type: String, reflect: true })
+  accessor value = '';
 
+  /** Validation errors map received from the host app. */
   @property({ type: Object, attribute: false })
   accessor errors: Record<string, unknown> = {};
 
-  @state() private accessor touched = false;
+  /** Tracks whether the user already left the field at least once. */
+  @state()
+  private accessor touched = false;
 
+  /** Emits `onInput` while the user types. */
   private handleInput(e: Event) {
     const input = e.target as HTMLInputElement;
     this.value = input.value;
@@ -71,6 +89,7 @@ export class InputComponent extends LitElement {
     );
   }
 
+  /** Emits `onChange` when the value is committed by the browser. */
   private changeInput(e: Event) {
     const input = e.target as HTMLInputElement;
     this.value = input.value;
@@ -83,11 +102,12 @@ export class InputComponent extends LitElement {
     );
   }
 
+  /** Marks field as touched to show validation errors. */
   private handleBlur() {
     this.touched = true;
   }
 
-
+  /** Returns a user-friendly error message from the errors map. */
   private getErrorMessage(): string {
     const err = this.errors;
     if (err?.['required']) {
@@ -100,6 +120,7 @@ export class InputComponent extends LitElement {
     return '';
   }
 
+  /** Renders label, input and optional error message. */
   override render() {
     const hasError = Object.keys(this.errors ?? {}).length > 0;
 

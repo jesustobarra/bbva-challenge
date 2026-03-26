@@ -1,9 +1,11 @@
 import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 
-export type LibButtonVariant = 'primary' | 'secondary' | 'danger';
-
+/**
+ * Reusable button web component used across the app.
+ */
 export class ButtonComponent extends LitElement {
+  /** Component styles for button layout, states and variants. */
   static override styles = css`
     :host {
       display: inline-block;
@@ -48,18 +50,21 @@ export class ButtonComponent extends LitElement {
     }
   `;
 
-  @property({ type: String })
-  accessor type: 'button' | 'submit' | 'reset' = 'button';
-
+  /** Visual style variant for the button. */
   @property({ type: String, reflect: true })
-  accessor variant: LibButtonVariant = 'primary';
+  accessor variant: 'primary' | 'secondary' | 'danger' = 'primary';
 
+  /** Disables interaction when true. */
   @property({ type: Boolean, reflect: true })
   accessor disabled = false;
 
+  /** Accessible label passed to the inner native button. */
   @property({ type: String, attribute: 'aria-label' })
   override accessor ariaLabel = '';
 
+  /**
+   * Normalizes the variant and renders the native button element.
+   */
   override render() {
     const v =
       this.variant === 'secondary'
@@ -71,7 +76,7 @@ export class ButtonComponent extends LitElement {
     return html`
       <button
         class=${v}
-        type=${this.type}
+        type="button"
         ?disabled=${this.disabled}
         aria-label=${this.ariaLabel || undefined}
       >

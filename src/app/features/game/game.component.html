@@ -27,9 +27,9 @@
 
   <div class="game-body">
     <app-traffic-light
-      [color]="semaforo()"
+      [color]="trafficLight()"
       [ariaLabel]="
-        semaforo() === 'red' ? 'Semáforo en rojo' : 'Semáforo en verde'
+        trafficLight() === 'red' ? 'Semáforo en rojo' : 'Semáforo en verde'
       "
     />
 

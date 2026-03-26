@@ -1,6 +1,9 @@
-import { Routes } from '@angular/router';
+import type { Routes } from '@angular/router';
 import { gameGuard } from './core/guards/game.guard';
 
+/**
+ * Application routes definition.
+ */
 export const routes: Routes = [
   {
     path: '',

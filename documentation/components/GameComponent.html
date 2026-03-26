@@ -1,0 +1,1581 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>red-light-green-light documentation</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+          <script>
+               // Blocking script to avoid flickering dark mode
+               // Dark mode toggle button
+               var useDark = window.matchMedia('(prefers-color-scheme: dark)');
+               var darkModeState = useDark.matches;
+               var $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               var $darkModeToggles = document.querySelectorAll('.dark-mode-switch');
+               var darkModeStateLocal = localStorage.getItem('compodoc_darkmode-state');
+
+               function checkToggle(check) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].checked = check;
+                    }
+               }
+
+               function toggleDarkMode(state) {
+                    if (window.localStorage) {
+                         localStorage.setItem('compodoc_darkmode-state', state);
+                    }
+
+                    checkToggle(state);
+
+                    const hasClass = document.body.classList.contains('dark');
+
+                    if (state) {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.add('dark');
+                         }
+                         if (!hasClass) {
+                              document.body.classList.add('dark');
+                         }
+                    } else {
+                         for (var i = 0; i < $darkModeToggles.length; i++) {
+                              $darkModeToggles[i].classList.remove('dark');
+                         }
+                         if (hasClass) {
+                              document.body.classList.remove('dark');
+                         }
+                    }
+               }
+
+               useDark.addEventListener('change', function (evt) {
+                    toggleDarkMode(evt.matches);
+               });
+               if (darkModeStateLocal) {
+                    darkModeState = darkModeStateLocal === 'true';
+               }
+               toggleDarkMode(darkModeState);
+          </script>
+          <script>
+              // --- Iframe navigation tracking for Template Playground ---
+              function sendCurrentUrlToParent() {
+                  if (window.parent && window.parent !== window) {
+                      window.parent.postMessage({
+                          type: 'compodoc-iframe-navigate',
+                          url: window.location.pathname + window.location.hash
+                      }, '*');
+                  }
+              }
+              window.addEventListener('hashchange', sendCurrentUrlToParent, false);
+              window.addEventListener('popstate', sendCurrentUrlToParent, false);
+              window.addEventListener('DOMContentLoaded', sendCurrentUrlToParent, false);
+          </script>
+
+        <div class="navbar navbar-default navbar-fixed-top d-md-none p-0">
+               <div class="d-flex">
+                    <a href="../" class="navbar-brand">red-light-green-light documentation</a>
+                    <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+               </div>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+                <div id="book-search-input" role="search"><input type="text" placeholder="Type to search"></div>            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="d-none d-md-block menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content component">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Components</li>
+  <li class="breadcrumb-item"
+  >
+  GameComponent</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" class="nav-link"
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+        <li class="nav-item">
+            <a href="#templateData" class="nav-link"
+                role="tab" id="templateData-tab" data-bs-toggle="tab" data-link="template">Template</a>
+        </li>
+        <li class="nav-item">
+            <a href="#tree" class="nav-link"
+                role="tab" id="tree-tab" data-bs-toggle="tab" data-link="dom-tree">DOM Tree</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info"><p class="comment">
+    <h3>File</h3>
+</p>
+<p class="comment">
+    <code>src/app/features/game/game.component.ts</code>
+</p>
+
+
+    <p class="comment">
+        <h3>Description</h3>
+    </p>
+    <p class="comment">
+        <p>Main game screen that controls turns, movement and score.</p>
+
+    </p>
+
+
+
+
+<section data-compodoc="block-metadata">
+    <h3>Metadata</h3>
+    <table class="table table-sm table-hover metadata">
+        <tbody>
+
+
+
+
+
+
+
+
+
+
+
+
+            <tr>
+                <td class="col-md-3">selector</td>
+                <td class="col-md-9"><code>app-game</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">standalone</td>
+                <td class="col-md-9"><code>true</code></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-3">imports</td>
+                <td class="col-md-9">
+                                <code><a href="../components/TrafficLightComponent.html" target="_self" >TrafficLightComponent</a></code>
+                                <code><a href="../components/FootprintComponent.html" target="_self" >FootprintComponent</a></code>
+                </td>
+            </tr>
+
+
+
+
+            <tr>
+                <td class="col-md-3">templateUrl</td>
+                <td class="col-md-9"><code>./game.component.html</code></td>
+            </tr>
+
+
+
+            <tr>
+                <td class="col-md-3">styleUrl</td>
+                <td class="col-md-9"><code>./game.component.scss</code></td>
+            </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#destroyRef" >destroyRef</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#lastFoot" >lastFoot</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#player" >player</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#router" >router</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#timeoutId" >timeoutId</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#trafficLight" >trafficLight</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#footColor" >footColor</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#goToMenu" >goToMenu</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#greenLightDurationMs" >greenLightDurationMs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#moveLeft" >moveLeft</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Protected</span>
+                                <a href="#moveRight" >moveRight</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#onFoot" >onFoot</a>
+                            </li>
+                            <li>
+                                    <span class="modifier"></span>
+                                    <span class="modifier">Protected</span>
+                                <a href="#onKeyDown" >onKeyDown</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#randomGreenJitterMs" >randomGreenJitterMs</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#scheduleNextPhase" >scheduleNextPhase</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>HostListeners</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#window:keydown" >window:keydown</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+        </tbody>
+    </table>
+</section>
+
+    <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor()</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/game/game.component.ts:73</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Sets up cleanup handlers and starts the traffic light loop.</p>
+</div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+    <section data-compodoc="block-methods">
+    <h3>HostListeners</h3>    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="window:keydown"></a>
+                    <span class="name">
+                        <span ><b>window:keydown</b></span>
+                        <a href="#window:keydown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <i>Arguments : </i><code>'$event' </code>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>window:keydown(event: <a href="../miscellaneous/variables.html#n" target="_self">KeyboardEvent</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles keyboard movement controls.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Browser keyboard event.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="footColor"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>footColor</b></span>
+                        <a href="#footColor"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>footColor(side: <a href="../miscellaneous/typealiases.html#FootSide" target="_self">FootSide</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="152"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:152</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Computes footprint visual state based on game status.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>side</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#FootSide" target="_self" >FootSide</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Foot side being rendered.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#n" target="_self" >string</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Color for the requested side.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="goToMenu"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>goToMenu</b></span>
+                        <a href="#goToMenu"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>goToMenu()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="91"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:91</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns to the menu view and persists progress.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="greenLightDurationMs"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>greenLightDurationMs</b></span>
+                        <a href="#greenLightDurationMs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>greenLightDurationMs(score: <a href="../miscellaneous/variables.html#n" target="_self">number</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="203"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:203</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Computes green light duration based on current score and jitter.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>score</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#n" target="_self" >number</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Current player score.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#n" target="_self" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Green phase duration in milliseconds.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="moveLeft"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>moveLeft</b></span>
+                        <a href="#moveLeft"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>moveLeft()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="117"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:117</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles left movement action.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="moveRight"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                        <span ><b>moveRight</b></span>
+                        <a href="#moveRight"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>moveRight()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="124"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:124</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles right movement action.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onFoot"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>onFoot</b></span>
+                        <a href="#onFoot"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onFoot(side: <a href="../miscellaneous/typealiases.html#FootSide" target="_self">FootSide</a>)</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="168"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:168</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Applies game scoring rules for a foot movement.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>side</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/typealiases.html#FootSide" target="_self" >FootSide</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Foot side used by the player.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="onKeyDown"></a>
+                    <span class="name">
+                            <span class="modifier"></span>
+                            <span class="modifier">Protected</span>
+                        <span ><b>onKeyDown</b></span>
+                        <a href="#onKeyDown"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>onKeyDown(event: <a href="../miscellaneous/variables.html#n" target="_self">KeyboardEvent</a>)</code>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <b>Decorators : </b>
+                    <br />
+                    <code>@HostListener(&#x27;window:keydown&#x27;, [&#x27;$event&#x27;])<br /></code>
+                </td>
+            </tr>
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="134"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:134</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Handles keyboard movement controls.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Parameters :</b>
+                                
+                                <table class="params">
+                                    <thead>
+                                        <tr>
+                                            <td>Name</td>
+                                                <td>Type</td>
+                                            <td>Optional</td>
+                                                <td>Description</td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                                <td>event</td>
+                                            <td>
+                                                            <code><a href="../miscellaneous/variables.html#n" target="_self" >KeyboardEvent</a></code>
+                                            </td>
+
+                                            <td>
+                                                    No
+                                            </td>
+
+
+                                            <td>
+                                                    <p>Browser keyboard event.</p>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="randomGreenJitterMs"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>randomGreenJitterMs</b></span>
+                        <a href="#randomGreenJitterMs"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>randomGreenJitterMs()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="191"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:191</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Returns a random jitter value for green light duration.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="../miscellaneous/variables.html#n" target="_self" >number</a></code>
+
+                        </div>
+                            <div class="io-description">
+                                <p>Integer jitter in milliseconds within configured range.</p>
+
+                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="scheduleNextPhase"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>scheduleNextPhase</b></span>
+                        <a href="#scheduleNextPhase"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>scheduleNextPhase()</code>
+                </td>
+            </tr>
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-line">Defined in <a href="" data-line="99"
+                                    class="link-to-prism">src/app/features/game/game.component.ts:99</a></div>
+                        </td>
+                    </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-description"><p>Schedules the next red/green phase transition.</p>
+</div>
+
+                        <div class="io-description">
+                            <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                        </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+    <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="destroyRef"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>destroyRef</b></span>
+                        <a href="#destroyRef"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#n" target="_self" >unknown</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(DestroyRef)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/app/features/game/game.component.ts:62</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Angular destroy reference used to register cleanup logic.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="lastFoot"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>lastFoot</b></span>
+                        <a href="#lastFoot"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#n" target="_self" >FootSide | null</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>null</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/app/features/game/game.component.ts:70</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Last foot used by the player, <code>null</code> before first valid step.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="player"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>player</b></span>
+                        <a href="#player"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#n" target="_self" >unknown</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(PlayerService)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/app/features/game/game.component.ts:66</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Player state and persistence service.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="router"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>router</b></span>
+                        <a href="#router"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#n" target="_self" >unknown</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>inject(Router)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/app/features/game/game.component.ts:64</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Router service used for navigation between game and home.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="timeoutId"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>timeoutId</b></span>
+                        <a href="#timeoutId"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#n" target="_self" >ReturnType&lt;unknown&gt; | undefined</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/app/features/game/game.component.ts:68</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Current timer id controlling traffic light phase transitions.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="trafficLight"></a>
+                    <span class="name">
+                            <span class="modifier">Protected</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>trafficLight</b></span>
+                        <a href="#trafficLight"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../miscellaneous/variables.html#n" target="_self" >unknown</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>signal&lt;string&gt;(TRAFFIC_LIGHT_RED)</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/app/features/game/game.component.ts:73</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reactive current traffic light color token.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+</div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import {
+  CUSTOM_ELEMENTS_SCHEMA,
+  Component,
+  DestroyRef,
+  HostListener,
+  inject,
+  signal,
+} from &#x27;@angular/core&#x27;;
+import { Router } from &#x27;@angular/router&#x27;;
+import { FootprintComponent } from &#x27;../../shared/components/footprint/footprint.component&#x27;;
+import { TrafficLightComponent } from &#x27;../../shared/components/traffic-light/traffic-light.component&#x27;;
+import { PlayerService } from &#x27;../../core/services/player.service&#x27;;
+
+/** Duration of the red light phase in milliseconds. */
+const RED_LIGHT_MS &#x3D; 3000;
+/** Base duration of the green light phase in milliseconds. */
+const GREEN_LIGHT_BASE_MS &#x3D; 10000;
+/** Green light reduction per score point in milliseconds. */
+const GREEN_LIGHT_SCORE_STEP_MS &#x3D; 100;
+/** Lower bound for the green light duration in milliseconds. */
+const GREEN_LIGHT_MIN_MS &#x3D; 2000;
+/** Absolute random jitter range for green light duration in milliseconds. */
+const GREEN_LIGHT_JITTER_RANGE_MS &#x3D; 1500;
+/** Number of possible integer jitter values in range [-R, +R]. */
+const GREEN_LIGHT_JITTER_SPAN_MS &#x3D; GREEN_LIGHT_JITTER_RANGE_MS * 2 + 1;
+/** Score value applied when the player moves on red light. */
+const SCORE_RESET &#x3D; 0;
+/** Score delta for a valid move. */
+const SCORE_STEP_UP &#x3D; 1;
+/** Score delta for repeating the same foot consecutively. */
+const SCORE_STEP_DOWN &#x3D; -1;
+/** Color token used when traffic light is red. */
+const TRAFFIC_LIGHT_RED &#x3D; &#x27;red&#x27;;
+/** Color token used when traffic light is green. */
+const TRAFFIC_LIGHT_GREEN &#x3D; &#x27;green&#x27;;
+/** Active footprint color. */
+const FOOTPRINT_DEFAULT &#x3D; &#x27;#0f172a&#x27;;
+/** Keyboard key mapped to left movement. */
+const KEY_ARROW_LEFT &#x3D; &#x27;ArrowLeft&#x27;;
+/** Keyboard key mapped to right movement. */
+const KEY_ARROW_RIGHT &#x3D; &#x27;ArrowRight&#x27;;
+
+/** Muted footprint color for invalid/non-active side. */
+const FOOTPRINT_MUTED &#x3D; &#x27;#94a3b8&#x27;;
+
+/** Supported foot sides for movement and highlighting logic. */
+type FootSide &#x3D; &#x27;left&#x27; | &#x27;right&#x27;;
+
+/**
+ * Main game screen that controls turns, movement and score.
+ */
+@Component({
+  selector: &#x27;app-game&#x27;,
+  standalone: true,
+  imports: [TrafficLightComponent, FootprintComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  templateUrl: &#x27;./game.component.html&#x27;,
+  styleUrl: &#x27;./game.component.scss&#x27;,
+})
+export class GameComponent {
+  /** Angular destroy reference used to register cleanup logic. */
+  private readonly destroyRef &#x3D; inject(DestroyRef);
+  /** Router service used for navigation between game and home. */
+  private readonly router &#x3D; inject(Router);
+  /** Player state and persistence service. */
+  protected readonly player &#x3D; inject(PlayerService);
+  /** Current timer id controlling traffic light phase transitions. */
+  private timeoutId: ReturnType&lt;typeof setTimeout&gt; | undefined;
+  /** Last foot used by the player, &#x60;null&#x60; before first valid step. */
+  private lastFoot: FootSide | null &#x3D; null;
+
+  /** Reactive current traffic light color token. */
+  protected readonly trafficLight &#x3D; signal&lt;string&gt;(TRAFFIC_LIGHT_RED);
+
+  /**
+   * Sets up cleanup handlers and starts the traffic light loop.
+   */
+  constructor() {
+    this.destroyRef.onDestroy(() &#x3D;&gt; {
+      if (this.timeoutId !&#x3D;&#x3D; undefined) {
+        clearTimeout(this.timeoutId);
+      }
+      this.player.saveProgress();
+    });
+    this.scheduleNextPhase();
+  }
+
+  /**
+   * Returns to the menu view and persists progress.
+   */
+  protected goToMenu(): void {
+    this.player.saveProgress();
+    void this.router.navigate([&#x27;/&#x27;]);
+  }
+
+  /**
+   * Schedules the next red/green phase transition.
+   */
+  private scheduleNextPhase(): void {
+    const isRed &#x3D; this.trafficLight() &#x3D;&#x3D;&#x3D; TRAFFIC_LIGHT_RED;
+    const delayMs &#x3D; isRed ? RED_LIGHT_MS : this.greenLightDurationMs(this.player.score());
+    this.timeoutId &#x3D; setTimeout(() &#x3D;&gt; {
+      this.trafficLight.update((c) &#x3D;&gt; {
+        const next &#x3D; c &#x3D;&#x3D;&#x3D; TRAFFIC_LIGHT_RED ? TRAFFIC_LIGHT_GREEN : TRAFFIC_LIGHT_RED;
+        if (next &#x3D;&#x3D;&#x3D; TRAFFIC_LIGHT_GREEN) {
+          this.lastFoot &#x3D; null;
+        }
+        return next;
+      });
+      this.scheduleNextPhase();
+    }, delayMs);
+  }
+
+  /**
+   * Handles left movement action.
+   */
+  protected moveLeft(): void {
+    this.onFoot(&#x27;left&#x27;);
+  }
+
+  /**
+   * Handles right movement action.
+   */
+  protected moveRight(): void {
+    this.onFoot(&#x27;right&#x27;);
+  }
+
+  /**
+   * Handles keyboard movement controls.
+   *
+   * @param event Browser keyboard event.
+   */
+  @HostListener(&#x27;window:keydown&#x27;, [&#x27;$event&#x27;])
+  protected onKeyDown(event: KeyboardEvent): void {
+    if (event.key &#x3D;&#x3D;&#x3D; KEY_ARROW_LEFT) {
+      event.preventDefault();
+      this.moveLeft();
+      return;
+    }
+    if (event.key &#x3D;&#x3D;&#x3D; KEY_ARROW_RIGHT) {
+      event.preventDefault();
+      this.moveRight();
+    }
+  }
+
+  /**
+   * Computes footprint visual state based on game status.
+   *
+   * @param side Foot side being rendered.
+   * @returns Color for the requested side.
+   */
+  protected footColor(side: FootSide): string {
+    if (this.trafficLight() &#x3D;&#x3D;&#x3D; TRAFFIC_LIGHT_RED) {
+      return FOOTPRINT_MUTED;
+    }
+    if (this.lastFoot &#x3D;&#x3D;&#x3D; null) {
+      return FOOTPRINT_DEFAULT;
+    }
+    const nextFoot: FootSide &#x3D; this.lastFoot &#x3D;&#x3D;&#x3D; &#x27;left&#x27; ? &#x27;right&#x27; : &#x27;left&#x27;;
+    return side &#x3D;&#x3D;&#x3D; nextFoot ? FOOTPRINT_DEFAULT : FOOTPRINT_MUTED;
+  }
+
+  /**
+   * Applies game scoring rules for a foot movement.
+   *
+   * @param side Foot side used by the player.
+   */
+  private onFoot(side: FootSide): void {
+    if (this.trafficLight() &#x3D;&#x3D;&#x3D; TRAFFIC_LIGHT_RED) {
+      this.player.setScore(SCORE_RESET);
+      return;
+    }
+    if (this.lastFoot &#x3D;&#x3D;&#x3D; null) {
+      this.player.addScore(SCORE_STEP_UP);
+      this.lastFoot &#x3D; side;
+      return;
+    }
+    if (this.lastFoot &#x3D;&#x3D;&#x3D; side) {
+      this.player.addScore(SCORE_STEP_DOWN);
+    } else {
+      this.player.addScore(SCORE_STEP_UP);
+    }
+    this.lastFoot &#x3D; side;
+  }
+
+  /**
+   * Returns a random jitter value for green light duration.
+   *
+   * @returns Integer jitter in milliseconds within configured range.
+   */
+  private randomGreenJitterMs(): number {
+    return (
+      Math.floor(Math.random() * GREEN_LIGHT_JITTER_SPAN_MS) - GREEN_LIGHT_JITTER_RANGE_MS
+    );
+  }
+
+  /**
+   * Computes green light duration based on current score and jitter.
+   *
+   * @param score Current player score.
+   * @returns Green phase duration in milliseconds.
+   */
+  private greenLightDurationMs(score: number): number {
+    const base &#x3D; Math.max(
+      GREEN_LIGHT_BASE_MS - score * GREEN_LIGHT_SCORE_STEP_MS,
+      GREEN_LIGHT_MIN_MS,
+    );
+    return base + this.randomGreenJitterMs();
+  }
+}
+</code></pre>
+    </div>
+
+    <div class="tab-pane fade " id="templateData">
+        <pre class="line-numbers"><code class="language-html">&lt;div class&#x3D;&quot;game&quot;&gt;
+  &lt;header class&#x3D;&quot;game-header&quot; aria-label&#x3D;&quot;Jugador y puntuación&quot;&gt;
+    &lt;lib-button
+      class&#x3D;&quot;game-header__back&quot;
+      [variant]&#x3D;&quot;&#x27;secondary&#x27;&quot;
+      [type]&#x3D;&quot;&#x27;button&#x27;&quot;
+      (click)&#x3D;&quot;goToMenu()&quot;
+    &gt;
+      Volver al menú
+    &lt;/lib-button&gt;
+    &lt;span class&#x3D;&quot;game-header__name&quot;&gt;{{ player.name() }}&lt;/span&gt;
+    &lt;div class&#x3D;&quot;game-header__stats&quot;&gt;
+      &lt;span class&#x3D;&quot;game-header__score&quot;&gt;
+        &lt;span class&#x3D;&quot;game-header__score-label&quot;&gt;Puntos&lt;/span&gt;
+        &lt;span class&#x3D;&quot;game-header__score-value&quot; aria-live&#x3D;&quot;polite&quot;&gt;{{
+          player.score()
+        }}&lt;/span&gt;
+      &lt;/span&gt;
+      &lt;span class&#x3D;&quot;game-header__score&quot;&gt;
+        &lt;span class&#x3D;&quot;game-header__score-label&quot;&gt;Récord&lt;/span&gt;
+        &lt;span class&#x3D;&quot;game-header__score-value&quot; aria-live&#x3D;&quot;polite&quot;&gt;{{
+          player.maxPoints()
+        }}&lt;/span&gt;
+      &lt;/span&gt;
+    &lt;/div&gt;
+  &lt;/header&gt;
+
+  &lt;div class&#x3D;&quot;game-body&quot;&gt;
+    &lt;app-traffic-light
+      [color]&#x3D;&quot;trafficLight()&quot;
+      [ariaLabel]&#x3D;&quot;
+        trafficLight() &#x3D;&#x3D;&#x3D; &#x27;red&#x27; ? &#x27;Semáforo en rojo&#x27; : &#x27;Semáforo en verde&#x27;
+      &quot;
+    /&gt;
+
+    &lt;div class&#x3D;&quot;controls&quot; role&#x3D;&quot;group&quot; aria-label&#x3D;&quot;Controles&quot;&gt;
+      &lt;lib-button
+        [variant]&#x3D;&quot;&#x27;secondary&#x27;&quot;
+        [type]&#x3D;&quot;&#x27;button&#x27;&quot;
+        (click)&#x3D;&quot;moveLeft()&quot;
+      &gt;
+        &lt;app-footprint [color]&#x3D;&quot;footColor(&#x27;left&#x27;)&quot; /&gt;
+        &lt;span&gt;LEFT&lt;/span&gt;
+      &lt;/lib-button&gt;
+
+      &lt;lib-button
+        [variant]&#x3D;&quot;&#x27;secondary&#x27;&quot;
+        [type]&#x3D;&quot;&#x27;button&#x27;&quot;
+        (click)&#x3D;&quot;moveRight()&quot;
+      &gt;
+        &lt;app-footprint [color]&#x3D;&quot;footColor(&#x27;right&#x27;)&quot; /&gt;
+        &lt;span&gt;RIGHT&lt;/span&gt;
+      &lt;/lib-button&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+    </div>
+
+
+    <div class="tab-pane fade " id="tree">
+        <div id="tree-container"></div>
+        <div class="tree-legend">
+            <div class="title">
+                <b>Legend</b>
+            </div>
+            <div>
+                <div class="color htmlelement"></div><span>Html element</span>
+            </div>
+            <div>
+                <div class="color component"></div><span>Component</span>
+            </div>
+            <div>
+                <div class="color directive"></div><span>Html element with directive</span>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script src="../js/libs/vis-network.min.js"></script>
+<script src="../js/libs/htmlparser.js"></script>
+<script src="../js/libs/deep-iterator.js"></script>
+<script>
+        var COMPONENT_TEMPLATE = '<div><div class="game">  <header class="game-header" aria-label="Jugador y puntuación">    <lib-button      class="game-header__back"      [variant]="\'secondary\'"      [type]="\'button\'"      (click)="goToMenu()"    >      Volver al menú    </lib-button>    <span class="game-header__name">{{ player.name() }}</span>    <div class="game-header__stats">      <span class="game-header__score">        <span class="game-header__score-label">Puntos</span>        <span class="game-header__score-value" aria-live="polite">{{          player.score()        }}</span>      </span>      <span class="game-header__score">        <span class="game-header__score-label">Récord</span>        <span class="game-header__score-value" aria-live="polite">{{          player.maxPoints()        }}</span>      </span>    </div>  </header>  <div class="game-body">    <app-traffic-light      [color]="trafficLight()"      [ariaLabel]="        trafficLight() === \'red\' ? \'Semáforo en rojo\' : \'Semáforo en verde\'      "    />    <div class="controls" role="group" aria-label="Controles">      <lib-button        [variant]="\'secondary\'"        [type]="\'button\'"        (click)="moveLeft()"      >        <app-footprint [color]="footColor(\'left\')" />        <span>LEFT</span>      </lib-button>      <lib-button        [variant]="\'secondary\'"        [type]="\'button\'"        (click)="moveRight()"      >        <app-footprint [color]="footColor(\'right\')" />        <span>RIGHT</span>      </lib-button>    </div>  </div></div></div>'
+    var COMPONENTS = [{'name': 'App', 'selector': 'app-root'},{'name': 'FootprintComponent', 'selector': 'app-footprint'},{'name': 'GameComponent', 'selector': 'app-game'},{'name': 'HomeComponent', 'selector': 'app-home'},{'name': 'TrafficLightComponent', 'selector': 'app-traffic-light'}];
+    var DIRECTIVES = [];
+    var ACTUAL_COMPONENT = {'name': 'GameComponent'};
+</script>
+<script src="../js/tree.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'component';
+            var COMPODOC_CURRENT_PAGE_URL = 'GameComponent.html';
+            var MAX_SEARCH_RESULTS = 15;
+       </script>
+
+       <script>
+               $darkModeToggleSwitchers = document.querySelectorAll('.dark-mode-switch input');
+               checkToggle(darkModeState);
+               if ($darkModeToggleSwitchers.length > 0) {
+                    for (var i = 0; i < $darkModeToggleSwitchers.length; i++) {
+                         $darkModeToggleSwitchers[i].addEventListener('change', function (event) {
+                              darkModeState = !darkModeState;
+                              toggleDarkMode(darkModeState);
+                         });
+                    }
+               }
+          </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+          <script src="../js/search/search.js"></script>
+          <script src="../js/search/lunr.min.js"></script>
+          <script src="../js/search/search-lunr.js"></script>
+          <script src="../js/search/search_index.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

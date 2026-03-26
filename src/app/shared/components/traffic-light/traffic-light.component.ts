@@ -1,5 +1,8 @@
 import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, input } from '@angular/core';
 
+/**
+ * Renders the traffic light icon used by the game state.
+ */
 @Component({
   selector: 'app-traffic-light',
   standalone: true,
@@ -17,8 +20,11 @@ import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, input } fro
   `,
 })
 export class TrafficLightComponent {
-  protected readonly iconPath = '/308345.svg';
+  /** Static asset path for the traffic-light icon. */
+  protected readonly iconPath = '/assets/traffic-light.svg';
 
+  /** Current traffic-light color token. */
   readonly color = input<string>();
+  /** Optional accessible label exposed on the wrapper element. */
   readonly ariaLabel = input<string | undefined>(undefined);
 }

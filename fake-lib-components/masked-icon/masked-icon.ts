@@ -2,13 +2,19 @@ import { css, html, LitElement } from 'lit';
 import { property } from 'lit/decorators.js';
 import { styleMap } from 'lit/directives/style-map.js';
 
+/**
+ * Generic icon component that paints an SVG mask with a configurable color.
+ */
 export class MaskedIcon extends LitElement {
+  /** SVG asset path used as mask source. */
   @property({ type: String, reflect: true })
   accessor src = '';
 
+  /** Fill color applied to the masked icon silhouette. */
   @property({ type: String, reflect: true })
   accessor color = '';
 
+  /** Component styles that define the responsive masked silhouette. */
   static override styles = css`
     :host {
       --masked-icon-width: clamp(16rem, 82vmin, 30rem);
@@ -34,6 +40,9 @@ export class MaskedIcon extends LitElement {
     }
   `;
 
+  /**
+   * Renders the masked icon silhouette.
+   */
   override render() {
     const url = `url('${this.src}')`;
 
