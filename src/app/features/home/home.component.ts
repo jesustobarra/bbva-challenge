@@ -1,6 +1,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { PlayerService } from '../../core/services/player.service';
+import { PlayerService } from '../../core/services/player/player.service';
 
 /**
  * Home screen where the player enters a name and starts the game.

@@ -21,7 +21,7 @@ import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, input } fro
 })
 export class TrafficLightComponent {
   /** Static asset path for the traffic-light icon. */
-  protected readonly iconPath = '/assets/traffic-light.svg';
+  protected readonly iconPath = '/assets/images/traffic-light.svg';
 
   /** Current traffic-light color token. */
   readonly color = input<string>();

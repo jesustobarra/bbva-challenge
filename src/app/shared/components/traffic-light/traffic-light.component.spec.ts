@@ -20,7 +20,7 @@ describe('TrafficLightComponent', () => {
   });
 
   it('exposes the static icon path', () => {
-    expect((component as any).iconPath).toBe('/assets/traffic-light.svg');
+    expect((component as any).iconPath).toBe('/assets/images/traffic-light.svg');
   });
 
   it('has an optional color input with undefined default', () => {

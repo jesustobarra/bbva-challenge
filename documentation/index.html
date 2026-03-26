@@ -97,24 +97,44 @@
                    <div class="content-data">
 
 
-<h1>RedLightGreenLight</h1>
-<p>This project was generated using <a href="https://github.com/angular/angular-cli">Angular CLI</a> version 21.2.3.</p>
-<h2>Development server</h2>
-<p>To start a local development server, run:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng serve</code></pre></div><p>Once the server is running, open your browser and navigate to <code>http://localhost:4200/</code>. The application will automatically reload whenever you modify any of the source files.</p>
-<h2>Code scaffolding</h2>
-<p>Angular CLI includes powerful code scaffolding tools. To generate a new component, run:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng generate component component-name</code></pre></div><p>For a complete list of available schematics (such as <code>components</code>, <code>directives</code>, or <code>pipes</code>), run:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng generate --help</code></pre></div><h2>Building</h2>
-<p>To build the project run:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng build</code></pre></div><p>This will compile your project and store the build artifacts in the <code>dist/</code> directory. By default, the production build optimizes your application for performance and speed.</p>
-<h2>Running unit tests</h2>
-<p>To execute unit tests with the <a href="https://vitest.dev/">Vitest</a> test runner, use the following command:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng test</code></pre></div><h2>Running end-to-end tests</h2>
-<p>For end-to-end (e2e) testing, run:</p>
-<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">ng e2e</code></pre></div><p>Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.</p>
-<h2>Additional Resources</h2>
-<p>For more information on using the Angular CLI, including detailed command references, visit the <a href="https://angular.dev/tools/cli">Angular CLI Overview and Command Reference</a> page.</p>
+<h1>RedLightGreenLight (PWA)</h1>
+<h2>Requisitos</h2>
+<ul>
+<li>Node.js y npm (este proyecto usa <code>npm@11.x</code>)</li>
+</ul>
+<h2>Instalar dependencias</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm install</code></pre></div><h2>Ejecutar en local</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run start</code></pre></div><p>Abre <code>http://localhost:4200/</code>.</p>
+<h2>Ejecutar tests unitarios</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm test</code></pre></div><p>Cobertura:</p>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run test:coverage</code></pre></div><h2>Construir (build)</h2>
+<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run build</code></pre></div><p>Genera los artefactos en <code>dist/</code>. Al ser el build por defecto una configuración de producción, el Service Worker se activa (útil para el modo offline/PWA).</p>
+<h2>Librería Fake (custom elements)</h2>
+<p>La app usa componentes tipo <em>web component</em> (custom elements) con etiquetas como <code>&lt;lib-input&gt;</code>, <code>&lt;lib-button&gt;</code> y <code>&lt;lib-masked-icon&gt;</code>.</p>
+<p>En lugar de depender de una librería externa, estas piezas están implementadas en <code>fake-lib-components/</code>, que “fingea” una UI externa para que el proyecto sea autocontenido y testeable.</p>
+<h2>PWA / Modo offline</h2>
+<p>El modo offline (PWA) funciona mediante Service Worker usando <code>@angular/service-worker</code> y <code>ngsw-config.json</code>.</p>
+<p>Pasos típicos para comprobarlo localmente:</p>
+<ol>
+<li>Ejecuta un build:<b>Example :</b><div><pre class="line-numbers"><code class="language-bash">npm run build</code></pre></div></li>
+<li>Sirve el contenido generado en <code>dist/</code> con un servidor estático (por ejemplo: <code>npx http-server</code>).</li>
+</ol>
+<h2>Persistencia de progreso</h2>
+<p>El progreso por jugador se persiste en <code>localStorage</code> con la key:</p>
+<ul>
+<li><code>rlgl-player-saves</code></li>
+</ul>
+<p>Se guarda:</p>
+<ul>
+<li><code>resumeScore</code></li>
+<li><code>maxPoints</code></li>
+</ul>
+<h2>Despliegue público</h2>
+<p>La app se puede desplegar como SPA estática (por ejemplo en Vercel, Netlify o GitHub Pages).</p>
+<ul>
+<li>Comando de build: <code>npm run build</code></li>
+<li>Sirve el contenido generado por Angular en <code>dist/</code>.</li>
+</ul>
 
 
 

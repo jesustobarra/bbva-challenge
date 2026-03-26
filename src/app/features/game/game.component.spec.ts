@@ -3,7 +3,9 @@ import { Router } from '@angular/router';
 import { signal } from '@angular/core';
 import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { PlayerService } from '../../core/services/player.service';
+import { PlayerService } from '../../core/services/player/player.service';
+import { SongService } from '../../core/services/song/song.service';
+import { VibrationService } from '../../core/services/vibration/vibration.service';
 import { GameComponent } from './game.component';
 
 class PlayerServiceStub {
@@ -32,9 +34,22 @@ class RouterStub {
   );
 }
 
+class SongServiceStub {
+  load = vi.fn<(url: string) => void>();
+  play = vi.fn<() => void>();
+  stop = vi.fn<() => void>();
+  setRate = vi.fn<(rate: number) => void>();
+}
+
+class VibrationServiceStub {
+  vibrateOnScoreLoss = vi.fn<(durationMs?: number) => void>();
+}
+
 describe('GameComponent', () => {
   let playerStub: PlayerServiceStub;
   let routerStub: RouterStub;
+  let songStub: SongServiceStub;
+  let vibrationStub: VibrationServiceStub;
   let component: GameComponent;
 
   beforeAll(() => {
@@ -50,17 +65,22 @@ describe('GameComponent', () => {
     TestBed.resetTestingModule();
     playerStub = new PlayerServiceStub();
     routerStub = new RouterStub();
+    songStub = new SongServiceStub();
+    vibrationStub = new VibrationServiceStub();
 
     TestBed.configureTestingModule({
       providers: [
         { provide: PlayerService, useValue: playerStub },
         { provide: Router, useValue: routerStub },
+        { provide: SongService, useValue: songStub },
+        { provide: VibrationService, useValue: vibrationStub },
       ],
     });
     component = TestBed.runInInjectionContext(() => new GameComponent());
   });
 
   afterEach(() => {
+    vi.clearAllTimers();
     vi.useRealTimers();
   });
 
@@ -104,6 +124,29 @@ describe('GameComponent', () => {
     (component as any).moveLeft();
 
     expect(playerStub.addScore).toHaveBeenCalledWith(-1);
+  });
+
+  it('vibrates the device when losing points on red light', () => {
+    playerStub.setScore(3);
+    (component as any).trafficLight.set('red');
+
+    (component as any).moveLeft();
+
+    expect(playerStub.setScore).toHaveBeenCalledWith(0);
+    expect(vibrationStub.vibrateOnScoreLoss).toHaveBeenCalledTimes(1);
+  });
+
+  it('vibrates the device when losing points for repeating a side on green light', () => {
+    playerStub.setScore(2);
+    (component as any).trafficLight.set('green');
+    (component as any).lastFoot = null;
+
+    // First step on green increases score; the second same-side step decreases it.
+    (component as any).moveLeft();
+    (component as any).moveLeft();
+
+    expect(playerStub.addScore).toHaveBeenCalledWith(-1);
+    expect(vibrationStub.vibrateOnScoreLoss).toHaveBeenCalledTimes(1);
   });
 
   it('adds score when alternating feet on green light', () => {
@@ -153,6 +196,44 @@ describe('GameComponent', () => {
 
     expect((component as any).trafficLight()).toBe('green');
     expect((component as any).lastFoot).toBeNull();
-    expect(vi.getTimerCount()).toBe(1);
+    // The traffic loop schedules timers; the exact count can vary depending on
+    // the audio rate ramp implementation (intervals vs. single timeouts).
+    expect(vi.getTimerCount()).toBeGreaterThan(0);
+  });
+
+  it('plays the song and sets an initial rate when turning green', () => {
+    songStub.play.mockClear();
+    songStub.stop.mockClear();
+    songStub.setRate.mockClear();
+
+    // Red->Green happens at 3000ms.
+    vi.advanceTimersByTime(3000);
+
+    expect(songStub.play).toHaveBeenCalled();
+    expect(songStub.setRate).toHaveBeenCalledWith(0.8);
+  });
+
+  it('updates the song rate periodically while green', () => {
+    songStub.setRate.mockClear();
+
+    vi.advanceTimersByTime(3000);
+    const initialCalls = songStub.setRate.mock.calls.length;
+
+    // The ramp tick runs every 100ms.
+    vi.advanceTimersByTime(250);
+    const laterCalls = songStub.setRate.mock.calls.length;
+
+    expect(laterCalls).toBeGreaterThan(initialCalls);
+  });
+
+  it('stops the song when switching back to red', () => {
+    const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.5);
+
+    // With jitter=0 and score=0:
+    // green duration = 10000ms, so red happens at 3000ms + 10000ms = 13000ms.
+    vi.advanceTimersByTime(13000);
+
+    expect(songStub.stop).toHaveBeenCalled();
+    randomSpy.mockRestore();
   });
 });

@@ -9,7 +9,9 @@ import {
 import { Router } from '@angular/router';
 import { FootprintComponent } from '../../shared/components/footprint/footprint.component';
 import { TrafficLightComponent } from '../../shared/components/traffic-light/traffic-light.component';
-import { PlayerService } from '../../core/services/player.service';
+import { PlayerService } from '../../core/services/player/player.service';
+import { SongService } from '../../core/services/song/song.service';
+import { VibrationService } from '../../core/services/vibration/vibration.service';
 
 /** Duration of the red light phase in milliseconds. */
 const RED_LIGHT_MS = 3000;
@@ -43,6 +45,15 @@ const KEY_ARROW_RIGHT = 'ArrowRight';
 /** Muted footprint color for invalid/non-active side. */
 const FOOTPRINT_MUTED = '#94a3b8';
 
+/** Song URL served from `public/` as `/assets/...`. */
+const SONG_URL = '/assets/audio/tictac.mp3';
+/** Minimum playback rate at the start of green phase. */
+const SONG_RATE_MIN = 0.8;
+/** Maximum playback rate at the end of green phase. */
+const SONG_RATE_MAX = 2.5;
+/** How often we update song rate while green (ms). */
+const SONG_RATE_RAMP_TICK_MS = 100;
+
 /** Supported foot sides for movement and highlighting logic. */
 type FootSide = 'left' | 'right';
 
@@ -64,8 +75,20 @@ export class GameComponent {
   private readonly router = inject(Router);
   /** Player state and persistence service. */
   protected readonly player = inject(PlayerService);
+  /** Song playback controller used during the green phase. */
+  private readonly song = inject(SongService);
+  /** Vibration service used to give haptic feedback on score loss. */
+  private readonly vibration = inject(VibrationService);
   /** Current timer id controlling traffic light phase transitions. */
   private timeoutId: ReturnType<typeof setTimeout> | undefined;
+  /** Captured duration for the currently active green phase (ms). */
+  private greenPhaseDurationMs: number | undefined;
+  /** Duration used by the current green-rate ramp (ms). */
+  private greenRateDurationMs = 0;
+  /** Green phase start time used for rate ramp. */
+  private greenStartedAtMs = 0;
+  /** Interval id for the green-rate ramp. */
+  private greenRateIntervalId: ReturnType<typeof setInterval> | null = null;
   /** Last foot used by the player, `null` before first valid step. */
   private lastFoot: FootSide | null = null;
 
@@ -76,10 +99,14 @@ export class GameComponent {
    * Sets up cleanup handlers and starts the traffic light loop.
    */
   constructor() {
+    this.song.load(SONG_URL);
+
     this.destroyRef.onDestroy(() => {
       if (this.timeoutId !== undefined) {
         clearTimeout(this.timeoutId);
       }
+      this.stopGreenRateRamp();
+      this.song.stop();
       this.player.saveProgress();
     });
     this.scheduleNextPhase();
@@ -98,17 +125,94 @@ export class GameComponent {
    */
   private scheduleNextPhase(): void {
     const isRed = this.trafficLight() === TRAFFIC_LIGHT_RED;
-    const delayMs = isRed ? RED_LIGHT_MS : this.greenLightDurationMs(this.player.score());
+    const delayMs = isRed
+      ? RED_LIGHT_MS
+      : this.greenPhaseDurationMs ?? this.greenLightDurationMs(this.player.score());
     this.timeoutId = setTimeout(() => {
       this.trafficLight.update((c) => {
         const next = c === TRAFFIC_LIGHT_RED ? TRAFFIC_LIGHT_GREEN : TRAFFIC_LIGHT_RED;
         if (next === TRAFFIC_LIGHT_GREEN) {
+          // Capture the green phase duration once, so the music speed ramp matches
+          // the actual remaining time of the semaphore.
+          const durationMs = this.greenLightDurationMs(this.player.score());
+          this.greenPhaseDurationMs = durationMs;
           this.lastFoot = null;
+          this.song.play();
+          this.startGreenRateRamp(durationMs);
+          return next;
         }
+
+        this.greenPhaseDurationMs = undefined;
+        this.stopGreenRateRamp();
+        this.song.stop();
+
         return next;
       });
       this.scheduleNextPhase();
     }, delayMs);
+  }
+
+  /**
+   * Starts a visual "ramp" of the song speed based on green phase time progress.
+   * The ramp ends when `progress >= 1` OR when the traffic light switches back to red.
+   */
+  private startGreenRateRamp(durationMs: number): void {
+    if (durationMs <= 0) {
+      return;
+    }
+
+    this.stopGreenRateRamp();
+
+    this.greenRateDurationMs = durationMs;
+    this.greenStartedAtMs = this.nowMs();
+
+    this.setSongRateAtProgress(0);
+
+    // Update playbackRate periodically while the light stays green.
+    this.greenRateIntervalId = setInterval(this.tickGreenRate, SONG_RATE_RAMP_TICK_MS);
+  }
+
+  private stopGreenRateRamp(): void {
+    if (this.greenRateIntervalId === null) {
+      return;
+    }
+
+    clearInterval(this.greenRateIntervalId);
+    this.greenRateIntervalId = null;
+  }
+
+  private tickGreenRate = (): void => {
+    if (this.greenRateDurationMs <= 0) {
+      this.stopGreenRateRamp();
+      return;
+    }
+
+    const elapsed = this.nowMs() - this.greenStartedAtMs;
+    const progress = this.clamp(elapsed / this.greenRateDurationMs, 0, 1);
+    this.setSongRateAtProgress(progress);
+
+    if (progress >= 1) {
+      this.stopGreenRateRamp();
+      return;
+    }
+  };
+
+  private setSongRateAtProgress(progress: number): void {
+    const t = progress * progress * (3 - 2 * progress);
+    const rate = SONG_RATE_MIN + (SONG_RATE_MAX - SONG_RATE_MIN) * t;
+    this.song.setRate(rate);
+  }
+
+
+  private nowMs(): number {
+    if (typeof performance !== 'undefined' && typeof performance.now === 'function') {
+      return performance.now();
+    }
+    return Date.now();
+  }
+
+  private clamp(v: number, min: number, max: number): number {
+    return Math.min(max, Math.max(min, v));
   }
 
   /**
@@ -167,7 +271,11 @@ export class GameComponent {
    */
   private onFoot(side: FootSide): void {
     if (this.trafficLight() === TRAFFIC_LIGHT_RED) {
+      
       this.player.setScore(SCORE_RESET);
+
+      this.vibration.vibrateOnScoreLoss();
+      
       return;
     }
     if (this.lastFoot === null) {
@@ -177,6 +285,7 @@ export class GameComponent {
     }
     if (this.lastFoot === side) {
       this.player.addScore(SCORE_STEP_DOWN);
+      this.vibration.vibrateOnScoreLoss();
     } else {
       this.player.addScore(SCORE_STEP_UP);
     }

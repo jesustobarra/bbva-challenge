@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { Router, type CanActivateFn } from '@angular/router';
-import { PlayerService } from '../services/player.service';
+import { PlayerService } from '../services/player/player.service';
 
 /**
  * Route guard that blocks the game route when there is no player name.

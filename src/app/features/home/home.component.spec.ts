@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { signal } from '@angular/core';
 import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { PlayerService } from '../../core/services/player.service';
+import { PlayerService } from '../../core/services/player/player.service';
 import { HomeComponent } from './home.component';
 
 class PlayerServiceStub {

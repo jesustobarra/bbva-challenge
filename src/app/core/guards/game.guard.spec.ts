@@ -4,7 +4,7 @@ import type { UrlTree } from '@angular/router';
 import type { CanActivateFn } from '@angular/router';
 import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
-import { PlayerService } from '../services/player.service';
+import { PlayerService } from '../services/player/player.service';
 import { gameGuard } from './game.guard';
 
 class PlayerServiceStub {

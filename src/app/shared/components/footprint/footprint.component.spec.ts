@@ -20,7 +20,7 @@ describe('FootprintComponent', () => {
   });
 
   it('exposes the static icon path', () => {
-    expect((component as any).iconPath).toBe('/assets/footprints.svg');
+    expect((component as any).iconPath).toBe('/assets/images/footprints.svg');
   });
 
   it('has an optional color input with undefined default', () => {

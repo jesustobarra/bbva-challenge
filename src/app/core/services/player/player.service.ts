@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import type { PlayerSaveData } from '../dtos/player-save-data.dto';
+import type { PlayerSaveData } from '../../dtos/player-save-data.dto';
 
 /** LocalStorage key used to persist player progress entries. */
 const STORAGE_KEY = 'rlgl-player-saves';

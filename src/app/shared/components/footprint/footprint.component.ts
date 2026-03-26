@@ -19,7 +19,7 @@ import { ChangeDetectionStrategy, Component, CUSTOM_ELEMENTS_SCHEMA, input } fro
 })
 export class FootprintComponent {
   /** Static asset path for the footprint icon. */
-  protected readonly iconPath = '/assets/footprints.svg';
+  protected readonly iconPath = '/assets/images/footprints.svg';
 
   /** Color applied to the rendered icon. */
   readonly color = input<string>();
