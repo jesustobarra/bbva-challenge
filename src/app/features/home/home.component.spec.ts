@@ -4,6 +4,7 @@ import { signal } from '@angular/core';
 import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 import { beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { PlayerService } from '../../core/services/player/player.service';
+import { RankingService } from '../../core/services/ranking/ranking.service';
 import { HomeComponent } from './home.component';
 
 class PlayerServiceStub {
@@ -16,10 +17,18 @@ class RouterStub {
   navigate = vi.fn<(commands: readonly string[]) => Promise<boolean>>(async () => true);
 }
 
+class RankingServiceStub {
+  getRankingTable = vi.fn(() => ({
+    columns: ['#', 'Jugador', 'Récord'],
+    rows: [] as string[][],
+  }));
+}
+
 describe('HomeComponent', () => {
   let component: HomeComponent;
   let playerStub: PlayerServiceStub;
   let routerStub: RouterStub;
+  let rankingStub: RankingServiceStub;
 
   beforeAll(() => {
     try {
@@ -33,11 +42,13 @@ describe('HomeComponent', () => {
     TestBed.resetTestingModule();
     playerStub = new PlayerServiceStub();
     routerStub = new RouterStub();
+    rankingStub = new RankingServiceStub();
 
     TestBed.configureTestingModule({
       providers: [
         { provide: PlayerService, useValue: playerStub },
         { provide: Router, useValue: routerStub },
+        { provide: RankingService, useValue: rankingStub },
       ],
     });
 
@@ -80,5 +91,11 @@ describe('HomeComponent', () => {
 
     (component as any).name.set('Leo');
     expect((component as any).errors()).toBeNull();
+  });
+
+  it('loads ranking data from RankingService', () => {
+    expect(rankingStub.getRankingTable).toHaveBeenCalled();
+    expect((component as any).rankingTable().columns).toEqual(['#', 'Jugador', 'Récord']);
+    expect((component as any).rankingTable().rows).toEqual([]);
   });
 });

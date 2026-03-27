@@ -15,11 +15,15 @@ describe('defineCustomElements', () => {
     expect(getSpy).toHaveBeenCalledWith('lib-button');
     expect(getSpy).toHaveBeenCalledWith('lib-input');
     expect(getSpy).toHaveBeenCalledWith('lib-masked-icon');
-    expect(defineSpy).toHaveBeenCalledTimes(3);
+    expect(getSpy).toHaveBeenCalledWith('lib-table-row');
+    expect(getSpy).toHaveBeenCalledWith('lib-table');
+    expect(defineSpy).toHaveBeenCalledTimes(5);
     expect(defineSpy.mock.calls.map(([name]) => name)).toEqual([
       'lib-button',
       'lib-input',
       'lib-masked-icon',
+      'lib-table-row',
+      'lib-table',
     ]);
   });
 
@@ -35,10 +39,12 @@ describe('defineCustomElements', () => {
 
     defineCustomElements();
 
-    expect(defineSpy).toHaveBeenCalledTimes(2);
+    expect(defineSpy).toHaveBeenCalledTimes(4);
     expect(defineSpy.mock.calls.map(([name]) => name)).toEqual([
       'lib-button',
       'lib-masked-icon',
+      'lib-table-row',
+      'lib-table',
     ]);
   });
 });

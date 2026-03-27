@@ -1,6 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA, Component, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { PlayerService } from '../../core/services/player/player.service';
+import { RankingService } from '../../core/services/ranking/ranking.service';
 
 /**
  * Home screen where the player enters a name and starts the game.
@@ -16,6 +17,11 @@ export class HomeComponent {
   private readonly router = inject(Router);
   /** Player service used to initialize the session. */
   private readonly player = inject(PlayerService);
+  /** Loads ordered ranking rows for the table. */
+  private readonly rankingService = inject(RankingService);
+
+  /** Column labels and rows returned by `RankingService` for `lib-table`. */
+  protected readonly rankingTable = signal(this.rankingService.getRankingTable());
 
   /** Local reactive player name bound to the input component. */
   protected readonly name = signal(this.player.name());

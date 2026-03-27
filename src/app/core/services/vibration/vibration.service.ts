@@ -19,7 +19,6 @@ export class VibrationService {
    */
   vibrateOnScoreLoss(durationMs = 100): void {
     try {
-      // `navigator.vibrate` exists only on certain mobile browsers.
       if (typeof navigator.vibrate === 'function') {
         navigator.vibrate(durationMs);
       }

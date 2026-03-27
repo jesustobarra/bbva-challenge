@@ -1,19 +1,29 @@
-<form class="home" (submit)="enterGame()">
-  <h1 class="title">Red Light, Green Light!</h1>
-  <lib-input
-    [label]="'Nombre'"
-    [placeholder]="'Escribe tu nombre'"
-    [errors]="errors()"
-    [value]="name()"
+<div class="home">
+  <form class="home__form" (submit)="enterGame()">
+    <h1 class="title">Red Light, Green Light!</h1>
+    <lib-input
+      [label]="'Nombre'"
+      [placeholder]="'Escribe tu nombre'"
+      [errors]="errors()"
+      [value]="name()"
+      (onInput)="onInput($event)"
+    />
+    <lib-button
+      [variant]="'primary'"
+      [type]="'submit'"
+      [disabled]="!hasName()"
+      (click)="enterGame()"
+    >
+      Acceder
+    </lib-button>
+  </form>
 
-    (onInput)="onInput($event)"
-  />
-  <lib-button
-    [variant]="'primary'"
-    [type]="'submit'"
-    [disabled]="!hasName()"
-    (click)="enterGame()"
-  >
-    Acceder
-  </lib-button>
-</form>
+  <section class="home__ranking" aria-labelledby="home-ranking-title">
+    <h2 id="home-ranking-title" class="home__ranking-title">Ranking</h2>
+    <lib-table
+      [columns]="rankingTable().columns"
+      [rows]="rankingTable().rows"
+      [emptyLabel]="'Aún no hay partidas guardadas'"
+    />
+  </section>
+</div>
