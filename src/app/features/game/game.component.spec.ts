@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { signal } from '@angular/core';
 import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
 import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from 'vitest';
+import { GameService } from '../../core/services/game/game.service';
 import { PlayerService } from '../../core/services/player/player.service';
 import { SongService } from '../../core/services/song/song.service';
 import { VibrationService } from '../../core/services/vibration/vibration.service';
@@ -60,7 +61,7 @@ describe('GameComponent', () => {
     }
   });
 
-  beforeEach(async () => {
+  beforeEach(() => {
     vi.useFakeTimers();
     TestBed.resetTestingModule();
     playerStub = new PlayerServiceStub();
@@ -70,6 +71,7 @@ describe('GameComponent', () => {
 
     TestBed.configureTestingModule({
       providers: [
+        GameService,
         { provide: PlayerService, useValue: playerStub },
         { provide: Router, useValue: routerStub },
         { provide: SongService, useValue: songStub },
@@ -85,155 +87,36 @@ describe('GameComponent', () => {
   });
 
   it('navigates to menu and persists progress', async () => {
-    await (component as any).goToMenu();
+    await component['goToMenu']();
 
     expect(playerStub.saveProgress).toHaveBeenCalled();
     expect(routerStub.navigate).toHaveBeenCalledWith(['/']);
   });
 
-  it('resets score when moving on red light', () => {
-    (component as any).moveLeft();
-
-    expect(playerStub.setScore).toHaveBeenCalledWith(0);
-    expect(playerStub.addScore).not.toHaveBeenCalled();
+  it('delegates movement to GameService', () => {
+    const game = component['game'] as GameService;
+    const spy = vi.spyOn(game, 'moveLeft');
+    component['moveLeft']();
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
   });
 
-  it('adds score and updates footprint colors on green light', () => {
-    (component as any).trafficLight.set('green');
-
-    (component as any).moveLeft();
-
-    expect(playerStub.addScore).toHaveBeenCalledWith(1);
-    expect((component as any).footColor('left')).toBe('#94a3b8');
-    expect((component as any).footColor('right')).toBe('#0f172a');
-  });
-
-  it('returns muted color on red and default color on first green step', () => {
-    (component as any).trafficLight.set('red');
-    expect((component as any).footColor('left')).toBe('#94a3b8');
-
-    (component as any).trafficLight.set('green');
-    (component as any).lastFoot = null;
-    expect((component as any).footColor('left')).toBe('#0f172a');
-  });
-
-  it('penalizes repeated same foot on green light', () => {
-    (component as any).trafficLight.set('green');
-
-    (component as any).moveLeft();
-    (component as any).moveLeft();
-
-    expect(playerStub.addScore).toHaveBeenCalledWith(-1);
-  });
-
-  it('vibrates the device when losing points on red light', () => {
-    playerStub.setScore(3);
-    (component as any).trafficLight.set('red');
-
-    (component as any).moveLeft();
-
-    expect(playerStub.setScore).toHaveBeenCalledWith(0);
-    expect(vibrationStub.vibrateOnScoreLoss).toHaveBeenCalledTimes(1);
-  });
-
-  it('vibrates the device when losing points for repeating a side on green light', () => {
-    playerStub.setScore(2);
-    (component as any).trafficLight.set('green');
-    (component as any).lastFoot = null;
-
-    // First step on green increases score; the second same-side step decreases it.
-    (component as any).moveLeft();
-    (component as any).moveLeft();
-
-    expect(playerStub.addScore).toHaveBeenCalledWith(-1);
-    expect(vibrationStub.vibrateOnScoreLoss).toHaveBeenCalledTimes(1);
-  });
-
-  it('adds score when alternating feet on green light', () => {
-    (component as any).trafficLight.set('green');
-
-    (component as any).moveLeft();
-    (component as any).moveRight();
-
-    expect(playerStub.addScore).toHaveBeenNthCalledWith(1, 1);
-    expect(playerStub.addScore).toHaveBeenNthCalledWith(2, 1);
-    expect(playerStub.addScore).not.toHaveBeenCalledWith(-1);
-  });
-
-  it('keeps random green jitter inside configured range', () => {
-    const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0);
-    expect((component as any).randomGreenJitterMs()).toBe(-1500);
-
-    randomSpy.mockReturnValue(0.999999);
-    expect((component as any).randomGreenJitterMs()).toBe(1500);
-    randomSpy.mockRestore();
-  });
-
-  it('computes green duration with min cap and jitter', () => {
-    const jitterSpy = vi.spyOn(component as any, 'randomGreenJitterMs').mockReturnValue(123);
-
-    expect((component as any).greenLightDurationMs(0)).toBe(10123);
-    expect((component as any).greenLightDurationMs(999)).toBe(2123);
-
-    jitterSpy.mockRestore();
+  it('delegates footColor to GameService', () => {
+    const game = component['game'] as GameService;
+    game.trafficLight.set('red');
+    expect(component['footColor']('left')).toBe(game.footColor('left'));
   });
 
   it('handles keyboard arrows as movement input', () => {
-    const leftSpy = vi.spyOn(component as any, 'moveLeft');
-    const rightSpy = vi.spyOn(component as any, 'moveRight');
+    const leftSpy = vi.spyOn(component['game'] as GameService, 'moveLeft');
+    const rightSpy = vi.spyOn(component['game'] as GameService, 'moveRight');
 
-    (component as any).onKeyDown(new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
-    (component as any).onKeyDown(new KeyboardEvent('keydown', { key: 'ArrowRight' }));
+    component['onKeyDown'](new KeyboardEvent('keydown', { key: 'ArrowLeft' }));
+    component['onKeyDown'](new KeyboardEvent('keydown', { key: 'ArrowRight' }));
 
     expect(leftSpy).toHaveBeenCalled();
     expect(rightSpy).toHaveBeenCalled();
-  });
-
-  it('toggles traffic light phase and resets last foot on green', () => {
-    (component as any).lastFoot = 'left';
-
-    vi.advanceTimersByTime(3000);
-
-    expect((component as any).trafficLight()).toBe('green');
-    expect((component as any).lastFoot).toBeNull();
-    // The traffic loop schedules timers; the exact count can vary depending on
-    // the audio rate ramp implementation (intervals vs. single timeouts).
-    expect(vi.getTimerCount()).toBeGreaterThan(0);
-  });
-
-  it('plays the song and sets an initial rate when turning green', () => {
-    songStub.play.mockClear();
-    songStub.stop.mockClear();
-    songStub.setRate.mockClear();
-
-    // Red->Green happens at 3000ms.
-    vi.advanceTimersByTime(3000);
-
-    expect(songStub.play).toHaveBeenCalled();
-    expect(songStub.setRate).toHaveBeenCalledWith(0.8);
-  });
-
-  it('updates the song rate periodically while green', () => {
-    songStub.setRate.mockClear();
-
-    vi.advanceTimersByTime(3000);
-    const initialCalls = songStub.setRate.mock.calls.length;
-
-    // The ramp tick runs every 100ms.
-    vi.advanceTimersByTime(250);
-    const laterCalls = songStub.setRate.mock.calls.length;
-
-    expect(laterCalls).toBeGreaterThan(initialCalls);
-  });
-
-  it('stops the song when switching back to red', () => {
-    const randomSpy = vi.spyOn(Math, 'random').mockReturnValue(0.5);
-
-    // With jitter=0 and score=0:
-    // green duration = 10000ms, so red happens at 3000ms + 10000ms = 13000ms.
-    vi.advanceTimersByTime(13000);
-
-    expect(songStub.stop).toHaveBeenCalled();
-    randomSpy.mockRestore();
+    leftSpy.mockRestore();
+    rightSpy.mockRestore();
   });
 });

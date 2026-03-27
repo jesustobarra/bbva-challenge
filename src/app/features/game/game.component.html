@@ -1,4 +1,6 @@
-<div class="game">
+<main class="game" role="main" aria-labelledby="game-title">
+  <h1 id="game-title" class="game__title-sr">Red Light, Green Light</h1>
+
   <header class="game-header" aria-label="Jugador y puntuación">
     <lib-button
       class="game-header__back"
@@ -25,11 +27,11 @@
     </div>
   </header>
 
-  <div class="game-body">
+  <section class="game-body" aria-label="Semáforo y controles de movimiento">
     <app-traffic-light
-      [color]="trafficLight()"
+      [color]="game.trafficLight()"
       [ariaLabel]="
-        trafficLight() === 'red' ? 'Semáforo en rojo' : 'Semáforo en verde'
+        game.trafficLight() === 'red' ? 'Semáforo en rojo' : 'Semáforo en verde'
       "
     />
 
@@ -52,5 +54,5 @@
         <span>RIGHT</span>
       </lib-button>
     </div>
-  </div>
-</div>
+  </section>
+</main>
