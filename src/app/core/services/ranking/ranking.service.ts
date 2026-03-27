@@ -1,9 +1,8 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
+import { STORAGE_KEYS } from '../../constants/storage-keys';
 import type { PlayerSaveData } from '../../dtos/player-save-data.dto';
-
-/** Same storage key as `PlayerService` for persisted saves. */
-const STORAGE_KEY = 'rlgl-player-saves';
+import { StorageService } from '../storage/storage.service';
 
 /** Tabular data for `lib-table`: header labels and body rows (cell strings). */
 export interface RankingTableData {
@@ -18,6 +17,8 @@ export interface RankingTableData {
  */
 @Injectable({ providedIn: 'root' })
 export class RankingService {
+  /** Generic persistence utility. */
+  private readonly storage = inject(StorageService);
   /**
    * Returns columns and rows sorted by best score (descending).
    *
@@ -38,15 +39,6 @@ export class RankingService {
   }
 
   private readMap(): Record<string, PlayerSaveData> {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw === null || raw.length === 0) {
-        return {};
-      }
-      const data = JSON.parse(raw) as Record<string, PlayerSaveData>;
-      return data !== null && typeof data === 'object' ? data : {};
-    } catch {
-      return {};
-    }
+    return this.storage.getJson<Record<string, PlayerSaveData>>(STORAGE_KEYS.playerSaves, {});
   }
 }

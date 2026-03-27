@@ -1,8 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { STORAGE_KEYS } from '../../constants/storage-keys';
 import type { PlayerSaveData } from '../../dtos/player-save-data.dto';
-
-/** LocalStorage key used to persist player progress entries. */
-const STORAGE_KEY = 'rlgl-player-saves';
+import { StorageService } from '../storage/storage.service';
 /** Lowest allowed score value. */
 const MIN_SCORE = 0;
 /** Default score change applied by `addScore()` when no delta is provided. */
@@ -13,6 +12,8 @@ const DEFAULT_SCORE_DELTA = 1;
  */
 @Injectable({ providedIn: 'root' })
 export class PlayerService {
+  /** Generic persistence utility. */
+  private readonly storage = inject(StorageService);
   /** Internal signal with the current player name. */
   private readonly _name = signal('');
   /** Internal signal with the current game score. */
@@ -117,16 +118,7 @@ export class PlayerService {
    * @returns Progress map by player key, or an empty object on read failure.
    */
   private readMap(): Record<string, PlayerSaveData> {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw === null || raw.length === 0) {
-        return {};
-      }
-      const data = JSON.parse(raw) as Record<string, PlayerSaveData>;
-      return data !== null && typeof data === 'object' ? data : {};
-    } catch {
-      return {};
-    }
+    return this.storage.getJson<Record<string, PlayerSaveData>>(STORAGE_KEYS.playerSaves, {});
   }
 
   /**
@@ -135,10 +127,6 @@ export class PlayerService {
    * @param map Progress map keyed by player.
    */
   private writeMap(map: Record<string, PlayerSaveData>): void {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(map));
-    } catch {
-      return;
-    }
+    this.storage.setJson(STORAGE_KEYS.playerSaves, map);
   }
 }

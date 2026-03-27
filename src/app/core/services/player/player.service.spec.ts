@@ -1,10 +1,11 @@
-import { beforeEach, describe, expect, it } from 'vitest';
+import { TestBed } from '@angular/core/testing';
+import { BrowserTestingModule, platformBrowserTesting } from '@angular/platform-browser/testing';
+import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { STORAGE_KEYS } from '../../constants/storage-keys';
 import { PlayerService } from './player.service';
 
-const STORAGE_KEY = 'rlgl-player-saves';
-
 function readStorage(): Record<string, { maxPoints: number; resumeScore: number }> {
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const raw = localStorage.getItem(STORAGE_KEYS.playerSaves);
   if (raw === null) {
     return {};
   }
@@ -14,9 +15,18 @@ function readStorage(): Record<string, { maxPoints: number; resumeScore: number 
 describe('PlayerService', () => {
   let service: PlayerService;
 
+  beforeAll(() => {
+    try {
+      TestBed.initTestEnvironment(BrowserTestingModule, platformBrowserTesting());
+    } catch {
+      // Test environment may already be initialized in the same Vitest session.
+    }
+  });
+
   beforeEach(() => {
+    TestBed.resetTestingModule();
     localStorage.clear();
-    service = new PlayerService();
+    service = TestBed.runInInjectionContext(() => new PlayerService());
   });
 
   it('initializes empty state when there is no saved progress', () => {
@@ -29,7 +39,7 @@ describe('PlayerService', () => {
 
   it('restores saved progress using normalized player key', () => {
     localStorage.setItem(
-      STORAGE_KEY,
+      STORAGE_KEYS.playerSaves,
       JSON.stringify({
         alice: { resumeScore: 7.9, maxPoints: 10.4 },
       }),
@@ -44,7 +54,7 @@ describe('PlayerService', () => {
 
   it('normalizes invalid saved values to non-negative integers', () => {
     localStorage.setItem(
-      STORAGE_KEY,
+      STORAGE_KEYS.playerSaves,
       JSON.stringify({
         bob: { resumeScore: -3.2, maxPoints: -9.7 },
       }),
@@ -84,11 +94,11 @@ describe('PlayerService', () => {
   it('saveProgress does not write to storage when name is empty', () => {
     service.saveProgress();
 
-    expect(localStorage.getItem(STORAGE_KEY)).toBeNull();
+    expect(localStorage.getItem(STORAGE_KEYS.playerSaves)).toBeNull();
   });
 
   it('handles malformed storage content gracefully', () => {
-    localStorage.setItem(STORAGE_KEY, 'not-json');
+    localStorage.setItem(STORAGE_KEYS.playerSaves, 'not-json');
 
     service.prepareForGame('Mia');
     service.setScore(3);
